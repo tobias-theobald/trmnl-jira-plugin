@@ -15,3 +15,10 @@ export const OAUTH_TRMNL_CLIENT_SECRET = z
     })
     .min(1)
     .parse(process.env.OAUTH_TRMNL_CLIENT_SECRET);
+
+export const DATABASE_URL = z
+    .string({ message: 'DATABASE_URL must be a non-empty string' })
+    .min(1)
+    .url('DATABASE_URL must be a valid URL')
+    .startsWith('postgres://', 'DATABASE_URL must be a PostgreSQL URL')
+    .parse(process.env.DATABASE_URL);
