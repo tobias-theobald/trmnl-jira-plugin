@@ -22,3 +22,10 @@ export const DATABASE_URL = z
     .url('DATABASE_URL must be a valid URL')
     .startsWith('postgres://', 'DATABASE_URL must be a PostgreSQL URL')
     .parse(process.env.DATABASE_URL);
+
+export const JWT_SECRET = z
+    .string({
+        message: `JWT_SECRET must be a non-empty 256-bit hex string (64 ASCII hex characters). You can generate it by running 'node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"'`,
+    })
+    .regex(/^[0-9a-f]{64}$/i)
+    .parse(process.env.JWT_SECRET);

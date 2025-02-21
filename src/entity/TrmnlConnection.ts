@@ -1,18 +1,12 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class TrmnlConnection {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string;
-
-    @Column({
-        length: 255,
-        unique: true,
-        nullable: false,
-    })
+    @PrimaryColumn('varchar', { length: 255 })
     accessToken!: string;
 
     @Column({
+        type: 'varchar',
         length: 255,
         unique: true,
         nullable: true,
@@ -20,12 +14,14 @@ export class TrmnlConnection {
     uuid!: string;
 
     @Column({
-        type: 'integer',
+        type: 'varchar',
+        length: 255,
         nullable: true,
     })
-    utcOffset!: number;
+    timeZoneIana!: string;
 
     @Column({
+        type: 'varchar',
         length: 16,
         nullable: true,
     })

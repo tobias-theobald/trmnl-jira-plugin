@@ -10,6 +10,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^6.4.5",
+    "@tanstack/react-query": "^5.66.8",
+    "@trpc/client": "^11.0.0-rc.795",
+    "@trpc/server": "^11.0.0-rc.795",
+    "@trpc/tanstack-react-query": "^11.0.0-rc.795",
+    "jose": "^5.10.0",
     "next": "^15.1.7",
     "pg": "^8.13.3",
     "react": "^19.0.0",

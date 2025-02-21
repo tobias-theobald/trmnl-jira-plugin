@@ -30,6 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(403).json({ message: 'Origin not allowed' });
         return;
     }
+    const dbInitPromise = dbInit();
 
     // Fetch access token
     const body = {
@@ -60,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Save access token
-    const { TrmnlConnectionRepository } = await dbInit;
+    const { TrmnlConnectionRepository } = await dbInitPromise;
 
     // Check if connection already exists
     const existingConnection = await TrmnlConnectionRepository.findOneBy({ accessToken: accessToken });

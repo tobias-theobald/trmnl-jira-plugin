@@ -27,7 +27,7 @@ export const authenticateTrmnlWebhook = async (
     }
     const accessToken = parsedAuthzHeader.data.substring(BEARER_PREFIX.length);
 
-    const { TrmnlConnectionRepository } = await dbInit;
+    const { TrmnlConnectionRepository } = await dbInit();
 
     // Check if the access token exists in the database
     const connection = await TrmnlConnectionRepository.findOneBy({ accessToken });

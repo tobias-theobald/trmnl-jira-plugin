@@ -25,3 +25,5 @@ dist-ssr
 .env
 .next
 .yarn
+.aider*
+.coding-aider-plans

@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return;
     }
     const connection = authnResult.data;
-    const { TrmnlConnectionRepository } = await dbInit;
+    const { TrmnlConnectionRepository } = await dbInit();
 
     console.debug('Received uninstalled webhook', req.body);
     const bodyParsed = TrmnlUninstalledWebhook.safeParse(req.body);
@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     console.debug('Removing connection');
-    await TrmnlConnectionRepository.softDelete({ id: connection.id });
+    await TrmnlConnectionRepository.softDelete({ accessToken: connection.accessToken });
 
     console.info('Plugin uninstalled successfully');
     res.status(200).json({ message: 'OK' });

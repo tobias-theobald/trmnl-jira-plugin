@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return;
     }
     const connection = authnResult.data;
-    const { TrmnlConnectionRepository } = await dbInit;
+    const { TrmnlConnectionRepository } = await dbInit();
 
     console.debug('Received installed webhook', req.body);
     const bodyParsed = TrmnlInstalledWebhook.safeParse(req.body);
@@ -34,12 +34,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     console.debug('Updating connection');
     const {
-        user: { locale, utc_offset, uuid },
+        user: { locale, time_zone_iana, uuid },
     } = bodyParsed.data;
 
     // Update connection
     connection.locale = locale;
-    connection.utcOffset = utc_offset;
+    connection.timeZoneIana = time_zone_iana;
     connection.uuid = uuid;
     await TrmnlConnectionRepository.save(connection);
 
