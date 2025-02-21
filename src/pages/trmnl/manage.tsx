@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ManageTRMNLConnection: React.FC = () => {
+const ManageTRMNLConnection = () => {
     return (
         <div>
             <h1>Manage TRMNL Connection</h1>
