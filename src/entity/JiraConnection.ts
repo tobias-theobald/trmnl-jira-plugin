@@ -1,4 +1,14 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import {
+    Column,
+    CreateDateColumn,
+    DeleteDateColumn,
+    Entity,
+    OneToMany,
+    PrimaryColumn,
+    UpdateDateColumn,
+} from 'typeorm';
+
+import { TrmnlConnection } from '@/entity/TrmnlConnection';
 
 @Entity()
 export class JiraConnection {
@@ -39,6 +49,9 @@ export class JiraConnection {
         nullable: false,
     })
     absoluteRefreshTokenExpiresAt!: Date;
+
+    @OneToMany(() => TrmnlConnection, (trmnlConnection) => trmnlConnection.jiraConnection)
+    trmnlConnections!: TrmnlConnection[];
 
     @CreateDateColumn()
     createdAt!: Date;
