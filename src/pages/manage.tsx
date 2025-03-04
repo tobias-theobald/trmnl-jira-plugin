@@ -1,23 +1,34 @@
 import type { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
 import { memo, useEffect } from 'react';
+import { z } from 'zod';
 
-const ManageRoot = dynamic(() => import('@/components/manage/ManageRoot'), { ssr: false });
+import { generateAtlassianStateCookieName } from '@/util/constants';
+
+const ManageRoot = dynamic(() => import('@/components/manage/Layout'), { ssr: false });
 
 export type ManagePageProps = {
     ok: boolean;
     data: string;
 };
 
-export const getServerSideProps = (async ({ query }) => {
+export const getServerSideProps = (async ({ query, res }) => {
     // avoid triggering any build-time checks when bundling the frontend
-    const { createJwt } = await import('@/util/jwt');
-    const { uuid } = query;
-    if (typeof uuid !== 'string') {
+    const { createJwt } = await import('@/services/jwt');
+    const { uuid: uuidUnparsed } = query;
+    const uuidParseResult = z.string().uuid().safeParse(uuidUnparsed);
+    if (!uuidParseResult.success) {
         return { props: { ok: false, data: 'No UUID parameter found on request' } };
     }
+    const uuid = uuidParseResult.data;
     // TODO check database if the UUID is known
-    return { props: { ok: true, data: await createJwt(uuid) } };
+    const cookieJwt = await createJwt(uuid, 'atlassian-cookie');
+    res.appendHeader(
+        'Set-Cookie',
+        `${generateAtlassianStateCookieName(uuid)}=${cookieJwt}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=3600`,
+    );
+    const manageJwt = await createJwt(uuid, 'manage');
+    return { props: { ok: true, data: manageJwt } };
 }) satisfies GetServerSideProps<ManagePageProps>;
 
 export default memo(function ManagePage(props: ManagePageProps) {

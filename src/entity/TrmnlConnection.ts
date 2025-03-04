@@ -8,7 +8,8 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 
-import { JiraConnection } from '@/entity/JiraConnection';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import type { JiraConnection } from '@/entity/JiraConnection';
 
 @Entity()
 export class TrmnlConnection {
@@ -37,11 +38,13 @@ export class TrmnlConnection {
     })
     locale!: string | null;
 
-    @ManyToOne(() => JiraConnection, (jiraConnection) => jiraConnection.trmnlConnections, {
+    @ManyToOne('JiraConnection', (jiraConnection: JiraConnection) => jiraConnection.trmnlConnections, {
         nullable: true,
+        eager: true,
     })
     jiraConnection!: JiraConnection;
 
+    // The Jira site to use for this connection. Jira OAuth can give access to multiple sites in one access token.
     @Column({
         type: 'varchar',
         length: 255,

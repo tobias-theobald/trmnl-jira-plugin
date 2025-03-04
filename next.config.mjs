@@ -8,4 +8,8 @@ export default {
         };
         return webpackConfig;
     },
+    experimental: {
+        optimizePackageImports: ["@chakra-ui/react"],
+    },
+
 };

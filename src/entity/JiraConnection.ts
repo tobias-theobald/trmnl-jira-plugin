@@ -8,7 +8,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm';
 
-import { TrmnlConnection } from '@/entity/TrmnlConnection';
+import type { TrmnlConnection } from '@/entity/TrmnlConnection';
 
 @Entity()
 export class JiraConnection {
@@ -19,8 +19,7 @@ export class JiraConnection {
     atlassianAccountId!: string;
 
     @Column({
-        type: 'varchar',
-        length: 1024,
+        type: 'text',
         nullable: false,
     })
     accessTokenEncrypted!: string;
@@ -32,8 +31,7 @@ export class JiraConnection {
     accessTokenExpiresAt!: Date;
 
     @Column({
-        type: 'varchar',
-        length: 1024,
+        type: 'text',
         nullable: false,
     })
     refreshTokenEncrypted!: string;
@@ -50,8 +48,10 @@ export class JiraConnection {
     })
     absoluteRefreshTokenExpiresAt!: Date;
 
-    @OneToMany(() => TrmnlConnection, (trmnlConnection) => trmnlConnection.jiraConnection)
-    trmnlConnections!: TrmnlConnection[];
+    @OneToMany('TrmnlConnection', (trmnlConnection: TrmnlConnection) => trmnlConnection.jiraConnection, {
+        eager: false,
+    })
+    trmnlConnections!: Promise<TrmnlConnection[]>;
 
     @CreateDateColumn()
     createdAt!: Date;

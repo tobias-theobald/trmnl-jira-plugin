@@ -3,9 +3,9 @@ import { z } from 'zod';
 
 import { dbInit } from '@/data-source';
 import type { TrmnlConnection } from '@/entity/TrmnlConnection';
+import { AUTHORIZATION_PREFIX_BEARER } from '@/util/constants';
 
 const MAX_LENGTH_ACCESS_TOKEN = 1000;
-const BEARER_PREFIX = 'Bearer ';
 
 export const authenticateTrmnlWebhook = async (
     req: NextApiRequest,
@@ -18,14 +18,14 @@ export const authenticateTrmnlWebhook = async (
     const authzHeader = req.headers.authorization;
     const parsedAuthzHeader = z
         .string()
-        .startsWith(BEARER_PREFIX)
-        .max(MAX_LENGTH_ACCESS_TOKEN + BEARER_PREFIX.length)
+        .startsWith(AUTHORIZATION_PREFIX_BEARER)
+        .max(MAX_LENGTH_ACCESS_TOKEN + AUTHORIZATION_PREFIX_BEARER.length)
         .safeParse(authzHeader);
     if (!parsedAuthzHeader.success) {
         res.status(401).json({ message: 'Unauthorized' });
         return { success: false };
     }
-    const accessToken = parsedAuthzHeader.data.substring(BEARER_PREFIX.length);
+    const accessToken = parsedAuthzHeader.data.substring(AUTHORIZATION_PREFIX_BEARER.length);
 
     const { TrmnlConnectionRepository } = await dbInit();
 

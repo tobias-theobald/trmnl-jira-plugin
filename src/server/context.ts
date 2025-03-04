@@ -2,9 +2,8 @@ import { TRPCError } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 
 import { dbInit } from '@/data-source';
-import { verifyJwt } from '@/util/jwt';
-
-const AUTHORIZATION_PREFIX_BEARER = 'Bearer ';
+import { verifyJwt } from '@/services/jwt';
+import { AUTHORIZATION_PREFIX_BEARER, generateOrigin } from '@/util/constants';
 
 export async function createContext({ req }: FetchCreateContextFnOptions) {
     const authorizationHeader = req.headers.get('authorization');
@@ -14,7 +13,7 @@ export async function createContext({ req }: FetchCreateContextFnOptions) {
         });
     }
     const jwt = authorizationHeader.slice(AUTHORIZATION_PREFIX_BEARER.length);
-    const uuid = await verifyJwt(jwt);
+    const uuid = await verifyJwt(jwt, 'manage');
 
     const { TrmnlConnectionRepository } = await dbInit();
 
@@ -25,7 +24,17 @@ export async function createContext({ req }: FetchCreateContextFnOptions) {
         });
     }
 
-    return { uuid, trmnlConnection };
+    let origin: string;
+    try {
+        origin = generateOrigin(req.headers);
+    } catch (e) {
+        throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Invalid origin',
+        });
+    }
+
+    return { uuid, trmnlConnection, origin };
 }
 
 export type Context = Awaited<ReturnType<typeof createContext>>;

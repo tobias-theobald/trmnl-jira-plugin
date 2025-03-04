@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
 
 import { dbInit } from '@/data-source';
-import { authenticateTrmnlWebhook } from '@/util/authentication';
+import { authenticateTrmnlWebhook } from '@/services/authentication';
 
 const TrmnlUninstalledWebhook = z.object({
     user_uuid: z.string().uuid(),

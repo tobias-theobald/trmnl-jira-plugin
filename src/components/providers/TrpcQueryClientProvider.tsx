@@ -3,6 +3,7 @@ import { createTRPCClient, httpBatchLink } from '@trpc/client';
 import { type PropsWithChildren, useState } from 'react';
 
 import type { AppRouter } from '@/server/router';
+import { AUTHORIZATION_PREFIX_BEARER } from '@/util/constants';
 import { TRPCProvider } from '@/util/trpcFrontend';
 
 function makeQueryClient() {
@@ -45,7 +46,7 @@ export default function TrpcQueryClientProvider({ children, jwt }: TrpcQueryClie
                 httpBatchLink({
                     url: '/api/trpc',
                     headers: {
-                        Authorization: `Bearer ${jwt}`,
+                        Authorization: AUTHORIZATION_PREFIX_BEARER + jwt,
                     },
                 }),
             ],

@@ -19,10 +19,11 @@ export const sanitizeTrmnlConnectionForFrontend = (trmnlConnection: TrmnlConnect
         displayStyleQuadrant,
         boardColumnsByStatus,
     } = trmnlConnection;
+    console.debug('sanitizeTrmnlConnectionForFrontend', trmnlConnection);
     return {
         timeZoneIana,
         locale,
-        jiraConnected: jiraConnection !== null,
+        jiraConnected: jiraConnection !== null && jiraConnection !== undefined,
         jiraCloudId,
         jiraSourceType,
         jiraJql,
