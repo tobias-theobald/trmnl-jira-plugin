@@ -11,16 +11,10 @@ export const decryptToken = async (encryptedToken: string) => {
         keyManagementAlgorithms: [alg],
         contentEncryptionAlgorithms: [enc],
     });
-    const plaintextDecoded = new TextDecoder().decode(plaintext);
-
-    console.log(plaintextDecoded);
-    return plaintextDecoded;
+    return new TextDecoder().decode(plaintext);
 };
 
 export const encryptToken = async (plaintextToken: string) => {
     const plaintextEncoded = new TextEncoder().encode(plaintextToken);
-    const jwe = await new CompactEncrypt(plaintextEncoded).setProtectedHeader({ alg, enc }).encrypt(secret);
-
-    console.log(jwe);
-    return jwe;
+    return await new CompactEncrypt(plaintextEncoded).setProtectedHeader({ alg, enc }).encrypt(secret);
 };

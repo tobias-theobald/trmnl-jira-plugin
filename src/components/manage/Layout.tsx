@@ -1,11 +1,12 @@
 'use client';
 
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { IconButton, Stack } from '@mui/material';
+import { Card, IconButton, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
+import { DataSourceSettings } from '@/components/manage/DataSourceSettings';
 import { JiraConnection } from '@/components/manage/JiraConnection';
 import TrpcQueryClientProvider from '@/components/providers/TrpcQueryClientProvider';
 
@@ -29,7 +30,14 @@ const Layout = ({ jwt, uuid }: ManageRootProps) => {
                     </IconButton>
                 </Stack>
                 <Box marginY={4}>
-                    <JiraConnection />
+                    <Card>
+                        <JiraConnection />
+                    </Card>
+                </Box>
+                <Box marginY={4}>
+                    <Card>
+                        <DataSourceSettings />
+                    </Card>
                 </Box>
             </Container>
         </TrpcQueryClientProvider>

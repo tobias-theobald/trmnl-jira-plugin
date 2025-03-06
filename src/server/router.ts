@@ -1,15 +1,18 @@
 import { disconnectJira, generateOauthUrl, getJiraConnectionData } from '@/server/jiraConnection';
-import { getSettings } from '@/server/settings';
+import { getSettings, setSettings } from '@/server/settings';
 
 import { router } from './trpc';
 
 export const appRouter = router({
     jiraConnection: {
         generateOauthUrl,
-        disconnectJira,
-        getJiraConnectionData,
+        disconnect: disconnectJira,
+        getConnectionData: getJiraConnectionData,
     },
-    getSettings,
+    settings: {
+        get: getSettings,
+        set: setSettings,
+    },
 });
 
 // Export type router type signature,

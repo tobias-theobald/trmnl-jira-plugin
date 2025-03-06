@@ -1,9 +1,15 @@
+import type { SelectProps } from '@mui/material';
+import { z } from 'zod';
+
+export const JiraSourceType = z.literal('filter').or(z.literal('board')).or(z.literal('jql'));
+export type JiraSourceType = z.infer<typeof JiraSourceType>;
+
 export type SanitizedTrmnlConnection = {
     timeZoneIana: string | null;
     locale: string | null;
     jiraConnected: boolean;
     jiraCloudId: string | null;
-    jiraSourceType: 'filter' | 'board' | 'jql';
+    jiraSourceType: JiraSourceType;
     jiraJql: string | null;
     jiraFilterId: string | null;
     jiraBoardId: string | null;
@@ -29,3 +35,5 @@ export type JiraEntityNames = {
     jiraIssueFieldsById: Record<string, string>;
     jiraStatusById: Record<string, string>;
 };
+
+export type MuiSelectChangeHandler<T> = Exclude<SelectProps<T>['onChange'], undefined>;

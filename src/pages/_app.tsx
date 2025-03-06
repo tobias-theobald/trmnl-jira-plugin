@@ -3,6 +3,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { AppCacheProvider } from '@mui/material-nextjs/v15-pagesRouter';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import { SnackbarProvider } from 'notistack';
 
 import theme from '../theme';
 
@@ -16,7 +17,9 @@ export default function MyApp(props: AppProps) {
             <ThemeProvider theme={theme}>
                 {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                 <CssBaseline />
-                <Component {...pageProps} />
+                <SnackbarProvider>
+                    <Component {...pageProps} />
+                </SnackbarProvider>
             </ThemeProvider>
         </AppCacheProvider>
     );

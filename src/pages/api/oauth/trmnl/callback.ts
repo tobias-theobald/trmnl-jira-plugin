@@ -53,7 +53,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return;
         }
         const data = await response.json();
-        console.log(data);
         accessToken = data.access_token;
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch access token', error });

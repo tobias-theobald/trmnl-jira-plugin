@@ -1,7 +1,7 @@
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import LinkIcon from '@mui/icons-material/Link';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
-import { Avatar, Button, Card, CircularProgress, Skeleton, Stack } from '@mui/material';
+import { Avatar, Button, CircularProgress, Skeleton, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -11,20 +11,16 @@ import { type PropsWithChildren, useCallback } from 'react';
 import { useTRPC } from '@/util/trpcFrontend';
 
 const JiraConnectionLayout = ({ children }: PropsWithChildren) => {
-    return (
-        <Card>
-            <Box margin={2}>{children}</Box>
-        </Card>
-    );
+    return <Box margin={2}>{children}</Box>;
 };
 
 const JiraConnected = () => {
     const trpc = useTRPC();
     const queryClient = useQueryClient();
     const generateOauthUrlQuery = useQuery(trpc.jiraConnection.generateOauthUrl.queryOptions());
-    const jiraConnectionDataQuery = useQuery(trpc.jiraConnection.getJiraConnectionData.queryOptions());
+    const jiraConnectionDataQuery = useQuery(trpc.jiraConnection.getConnectionData.queryOptions());
     const disconnectJiraMutation = useMutation(
-        trpc.jiraConnection.disconnectJira.mutationOptions({
+        trpc.jiraConnection.disconnect.mutationOptions({
             onSuccess: () => {
                 queryClient.invalidateQueries().catch(() => {});
             },
@@ -116,7 +112,7 @@ const JiraDisconnected = () => {
 };
 
 export const JiraConnection = () => {
-    const settings = useQuery(useTRPC().getSettings.queryOptions());
+    const settings = useQuery(useTRPC().settings.get.queryOptions());
 
     if (settings.isPending) {
         return (

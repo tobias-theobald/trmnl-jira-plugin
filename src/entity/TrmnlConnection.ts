@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn, UpdateDateC
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { JiraConnection } from '@/entity/JiraConnection';
+import { JiraSourceType } from '@/types';
 
 @Entity()
 export class TrmnlConnection {
@@ -49,7 +50,7 @@ export class TrmnlConnection {
         length: 255,
         default: 'filter',
     })
-    jiraSourceType!: 'filter' | 'board' | 'jql';
+    jiraSourceType!: JiraSourceType;
 
     @Column({
         type: 'text',

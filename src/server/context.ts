@@ -15,7 +15,7 @@ export async function createContext({ req }: FetchCreateContextFnOptions) {
     const jwt = authorizationHeader.slice(AUTHORIZATION_PREFIX_BEARER.length);
     const uuid = await verifyJwt(jwt, 'manage');
 
-    const { TrmnlConnectionRepository } = await dbInit();
+    const { TrmnlConnectionRepository, JiraConnectionRepository } = await dbInit();
 
     const trmnlConnection = await TrmnlConnectionRepository.findOne({ relations: ['jiraConnection'], where: { uuid } });
     if (!trmnlConnection) {
@@ -34,7 +34,7 @@ export async function createContext({ req }: FetchCreateContextFnOptions) {
         });
     }
 
-    return { uuid, trmnlConnection, origin };
+    return { uuid, trmnlConnection, origin, TrmnlConnectionRepository, JiraConnectionRepository };
 }
 
 export type Context = Awaited<ReturnType<typeof createContext>>;

@@ -1,6 +1,5 @@
 import { TRPCError } from '@trpc/server';
 
-import { dbInit } from '@/data-source';
 import { publicProcedure } from '@/server/trpc';
 import { getAtlassianProfile, getAtlassianSites } from '@/services/api/atlassianApi';
 import { getValidAccessToken } from '@/services/jiraOauth';
@@ -41,14 +40,14 @@ export const getJiraConnectionData = publicProcedure.query(async ({ ctx }) => {
 });
 
 export const disconnectJira = publicProcedure.mutation(async ({ ctx }) => {
-    const { trmnlConnection } = ctx;
+    const { trmnlConnection, TrmnlConnectionRepository, JiraConnectionRepository } = ctx;
     if (!trmnlConnection.jiraConnection) {
         return;
     }
 
     const { jiraConnection } = trmnlConnection;
-    const { TrmnlConnectionRepository, JiraConnectionRepository } = await dbInit();
     trmnlConnection.jiraConnection = null;
+    trmnlConnection.jiraCloudId = null;
     await TrmnlConnectionRepository.save(trmnlConnection);
 
     // If this is the last connection to this Jira account, delete the Jira connection from our database
