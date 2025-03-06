@@ -60,21 +60,3 @@ export const exchangeRefreshToken = async (refreshToken: string) => {
     });
     return ensureResponseOk(response);
 };
-
-export const AtlassianProfile = z.object({
-    account_id: z.string(),
-    email: z.string().email().optional(),
-    name: z.string().optional(),
-    picture: z.string().url().optional(),
-});
-export const getMe = async (accessToken: string) => {
-    const response = await fetch(`https://api.atlassian.com/me`, {
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-        },
-    });
-    if (!response.ok) {
-        throw new Error(`Failed to fetch user data: ${response.statusText}`);
-    }
-    return AtlassianProfile.parse(await response.json());
-};

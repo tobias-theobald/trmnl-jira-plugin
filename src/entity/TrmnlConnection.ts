@@ -1,12 +1,4 @@
-import {
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
-    Entity,
-    ManyToOne,
-    PrimaryColumn,
-    UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { JiraConnection } from '@/entity/JiraConnection';
@@ -42,7 +34,7 @@ export class TrmnlConnection {
         nullable: true,
         eager: true,
     })
-    jiraConnection!: JiraConnection;
+    jiraConnection!: JiraConnection | null;
 
     // The Jira site to use for this connection. Jira OAuth can give access to multiple sites in one access token.
     @Column({
@@ -133,7 +125,4 @@ export class TrmnlConnection {
 
     @UpdateDateColumn()
     updatedAt!: Date;
-
-    @DeleteDateColumn()
-    deletedAt?: Date;
 }

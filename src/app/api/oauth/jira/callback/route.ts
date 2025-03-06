@@ -3,7 +3,8 @@ import type { NextRequest } from 'next/server';
 import { z } from 'zod';
 
 import { dbInit } from '@/data-source';
-import { exchangeCode, getMe } from '@/services/api/atlassianOauth';
+import { getAtlassianProfile } from '@/services/api/atlassianApi';
+import { exchangeCode } from '@/services/api/atlassianOauth';
 import { setExchangeResultInJiraConnection } from '@/services/jiraOauth';
 import { verifyJwt } from '@/services/jwt';
 import { generateAtlassianStateCookieName, generateJiraRedirectUri, generateOrigin } from '@/util/constants';
@@ -56,7 +57,7 @@ export async function GET(req: NextRequest): Promise<Response> {
 
     let profile;
     try {
-        profile = await getMe(codeExchangeResult.access_token);
+        profile = await getAtlassianProfile(codeExchangeResult.access_token);
     } catch (e) {
         console.error(`Failed to fetch profile: ${e}`);
         return Response.json({ message: 'Failed to fetch profile' }, { status: 500 });

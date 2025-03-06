@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     console.debug('Removing connection');
-    await TrmnlConnectionRepository.softDelete({ accessToken: connection.accessToken });
+    await TrmnlConnectionRepository.delete({ accessToken: connection.accessToken });
 
     console.info('Plugin uninstalled successfully');
     res.status(200).json({ message: 'OK' });

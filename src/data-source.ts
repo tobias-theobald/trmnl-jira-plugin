@@ -37,7 +37,7 @@ let dbInitPromise: null | ReturnType<typeof initDb> = null;
 // once in your application bootstrap
 export const dbInit = () => {
     if (dbInitPromise === null) {
-        return (dbInitPromise = initDb());
+        dbInitPromise = initDb();
     }
     return dbInitPromise;
 };

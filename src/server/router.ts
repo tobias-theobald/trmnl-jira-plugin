@@ -1,4 +1,4 @@
-import { generateOauthUrl } from '@/server/jiraConnection';
+import { disconnectJira, generateOauthUrl, getJiraConnectionData } from '@/server/jiraConnection';
 import { getSettings } from '@/server/settings';
 
 import { router } from './trpc';
@@ -6,6 +6,8 @@ import { router } from './trpc';
 export const appRouter = router({
     jiraConnection: {
         generateOauthUrl,
+        disconnectJira,
+        getJiraConnectionData,
     },
     getSettings,
 });

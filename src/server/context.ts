@@ -17,7 +17,7 @@ export async function createContext({ req }: FetchCreateContextFnOptions) {
 
     const { TrmnlConnectionRepository } = await dbInit();
 
-    const trmnlConnection = await TrmnlConnectionRepository.findOneBy({ uuid });
+    const trmnlConnection = await TrmnlConnectionRepository.findOne({ relations: ['jiraConnection'], where: { uuid } });
     if (!trmnlConnection) {
         throw new TRPCError({
             code: 'UNAUTHORIZED',

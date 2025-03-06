@@ -10,6 +10,7 @@ const ManageRoot = dynamic(() => import('@/components/manage/Layout'), { ssr: fa
 export type ManagePageProps = {
     ok: boolean;
     data: string;
+    uuid: string;
 };
 
 export const getServerSideProps = (async ({ query, res }) => {
@@ -18,7 +19,7 @@ export const getServerSideProps = (async ({ query, res }) => {
     const { uuid: uuidUnparsed } = query;
     const uuidParseResult = z.string().uuid().safeParse(uuidUnparsed);
     if (!uuidParseResult.success) {
-        return { props: { ok: false, data: 'No UUID parameter found on request' } };
+        return { props: { ok: false, data: 'No UUID parameter found on request', uuid: '' } };
     }
     const uuid = uuidParseResult.data;
     // TODO check database if the UUID is known
@@ -28,7 +29,7 @@ export const getServerSideProps = (async ({ query, res }) => {
         `${generateAtlassianStateCookieName(uuid)}=${cookieJwt}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=3600`,
     );
     const manageJwt = await createJwt(uuid, 'manage');
-    return { props: { ok: true, data: manageJwt } };
+    return { props: { ok: true, data: manageJwt, uuid } };
 }) satisfies GetServerSideProps<ManagePageProps>;
 
 export default memo(function ManagePage(props: ManagePageProps) {
@@ -51,5 +52,5 @@ export default memo(function ManagePage(props: ManagePageProps) {
         );
     }
 
-    return <ManageRoot jwt={props.data} />;
+    return <ManageRoot jwt={props.data} uuid={props.uuid} />;
 });

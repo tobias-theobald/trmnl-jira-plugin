@@ -13,7 +13,7 @@ const enc = 'A256GCM';
 export type JwtAudience = 'manage' | 'atlassian-state' | 'atlassian-cookie';
 
 export const createJwt = async (uuid: string, audience: JwtAudience) => {
-    const jwt = await new EncryptJWT({})
+    return await new EncryptJWT({})
         .setProtectedHeader({ alg, enc, typ: 'jwt' })
         .setIssuedAt()
         .setIssuer(issuer)
@@ -21,8 +21,6 @@ export const createJwt = async (uuid: string, audience: JwtAudience) => {
         .setSubject(uuid)
         .setExpirationTime('1h')
         .encrypt(secret);
-    console.log(jwt);
-    return jwt;
 };
 
 export const verifyJwt = async (jwt: string, audience: JwtAudience) => {
